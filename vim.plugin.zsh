@@ -4,20 +4,22 @@ export KEYTIMEOUT=1
 
 if [[ -o menucomplete ]]; then 
   # Use vim keys in tab complete menu:
-  bindkey -M menuselect '^h' vi-backward-char
-  bindkey -M menuselect '^k' vi-up-line-or-history
-  bindkey -M menuselect '^l' vi-forward-char
-  bindkey -M menuselect '^j' vi-down-line-or-history
-  bindkey -M menuselect '^[[Z' vi-up-line-or-history
+  zmodload zsh/complist
+  bindkey -M menuselect 'h' vi-backward-char
+  bindkey -M menuselect 'k' vi-up-line-or-history
+  bindkey -M menuselect 'l' vi-forward-char
+  bindkey -M menuselect 'j' vi-down-line-or-history
+  bindkey -M menuselect '^y' accept-line
+  bindkey -M menuselect '^l' accept-line
+  bindkey -M menuselect '^e' send-break
 fi
 
-bindkey -v '^?' backward-delete-char
-
 # Change cursor shape for different vi modes.
+# ref: https://ttssh2.osdn.jp/manual/4/en/usage/tips/vim.html
 function zle-keymap-select () {
     case $KEYMAP in
-        vicmd) echo -ne '\e[1 q';;      # block
-        viins|main) echo -ne '\e[5 q';; # beam
+        vicmd) echo -ne '\e[2 q';;      # steady block
+        viins|main) echo -ne '\e[1 q';; # blinking block
     esac
 }
 zle -N zle-keymap-select
